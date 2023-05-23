@@ -127,6 +127,7 @@ class Load:
         root = os.path.dirname(os.path.abspath(Input))
         filename = os.path.basename(Input).split('.')[0]
         path = root + '/' + filename 
+        print(path)
         _Satellite = path + '/Satellite.png'
         _Background = path + '/Background.bmp'
         _RoI =  path + '/Region of Interest.bmp'
