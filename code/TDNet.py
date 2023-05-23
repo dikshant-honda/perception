@@ -139,8 +139,8 @@ class Load:
         _RoiBevMask = path + '/ROI BEV Mask.bmp'
         _PixelUnit = path + '/Pixel Unit.bmp'
         _Config = path + '/config.json'
-        _Video = opt.save + '/Video'
-        _Figure = opt.save + '/Figure'
+        _Video = path + '/Video'
+        _Figure = path + '/Figure'
         if not os.path.exists(Input): print('::: Video Not Found!'); return 0
         self.Input = Input
         self.StartFrom = StartFrom
