@@ -48,7 +48,7 @@ def calcBackgound(VideoPath, reduc, Save=None):
 ''''''''''''''' Region of Interest '''''''''''''''
 def getROI(image, Save=None):
     while True:
-        roi, coords , roiImage = o.getROI('Select a Region of Interst for caliibration | Actions: Space = OK,  r = Retry |', image).run()
+        roi, coords , roiImage = os.getROI('Select a Region of Interst for caliibration | Actions: Space = OK,  r = Retry |', image).run()
         zeroDim = False
         for i in roi.shape:
             if i ==0: zeroDim = True

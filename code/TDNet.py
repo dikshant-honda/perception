@@ -186,7 +186,7 @@ class Load:
         self.BevSize = self.cfg['Calibration']['BEV size'][1], self.cfg['Calibration']['BEV size'][0]
         self.cfg['System']['Environment Mode'] = 'BEV'
         if os.path.exists(_RoadMask):
-            if self.cfg['System']['Use Mask for make Road']: elf.cfg['System']['Environment Mode'] = 'Road Mask'
+            if self.cfg['System']['Use Mask for make Road']: self.cfg['System']['Environment Mode'] = 'Road Mask'
         if os.path.exists(_Satellite):
             if self.cfg['System']['Use Mask for make Road']:  self.cfg['System']['Environment Mode'] = 'Road Mask'
             else:
