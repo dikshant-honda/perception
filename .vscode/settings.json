@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "/home/dikshant/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages",
+        "./code/YOLOv5"
+    ]
+}
