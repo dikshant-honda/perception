@@ -9,7 +9,7 @@ ap.add_argument("-ext", "--extension", required=False, default='png', help="exte
 ap.add_argument("-o", "--output", required=False, default='output.mp4', help="output video file")
 args = vars(ap.parse_args())
 
-dir_path = '/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/Insight-MVT_Annotation_Train/MVI_20011/'
+dir_path = '/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/Insight-MVT_Annotation_Train/MVI_20035'
 ext = args['extension']
 output = args['output']
 
@@ -41,3 +41,19 @@ out.release()
 cv2.destroyAllWindows()
 
 print("The output video is {}".format(output))
+
+# slowing down the video 
+
+fileName="output.mp4" 
+slomo_frame = int(input("Enter the frames you want to change to \n"))  
+cap = cv2.VideoCapture(fileName)       # load the video
+while(cap.isOpened()):                    # play the video by reading frame by frame
+    ret, frame = cap.read()
+    if ret==True:
+        cv2.imshow('frame',frame)              # show the video
+        if cv2.waitKey(slomo_frame) & 0xFF == ord('q'):
+            break
+    else:
+        break
+cap.release()
+cv2.destroyAllWindows()
