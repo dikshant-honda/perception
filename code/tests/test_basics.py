@@ -5,6 +5,8 @@ R = 114
 ESC_KEY = 27
 SPACE = 32
 
+### background extraction
+
 def checkReduction(image):
     reduction = 1
     if image.shape[0]>10000 or image.shape[1]>10000:
@@ -39,5 +41,5 @@ def calcBackgound(VideoPath, reduc, Save=None):
     return res2
 
 if __name__ == "__main__":
-    video_path = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/ua_detrac.mp4"
+    video_path = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/output.mp4"
     calcBackgound(video_path, 1, "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/background.jpg")
