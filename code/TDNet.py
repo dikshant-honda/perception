@@ -561,7 +561,7 @@ def main(opt):
     if opt.source:
         supSuffix =  ['mp4', 'avi', 'mpg', 'mov']
         if os.path.isdir(opt.source):  
-            print("\nIt is a directory")  
+            print("\nIt is a directory")
             if not os.path.exists(opt.source + '/Config'): print('::: Configuration Not Found!'); return 0
             for entry in os.scandir(opt.source):
                 if entry.is_file():
@@ -574,7 +574,7 @@ def main(opt):
             if os.path.exists(opt.source):
                 root = os.path.dirname(os.path.abspath(opt.source))
                 filename = os.path.basename(opt.source).split('.')[0]
-                paths = root + '/' + filename 
+                paths = root + '/' + filename
                 if not os.path.exists(paths + '/config.json'): print('::: Configuration Not Found!'); return 0
                 suffix = os.path.basename(opt.source).split('.')[1]
                 if suffix in supSuffix:
