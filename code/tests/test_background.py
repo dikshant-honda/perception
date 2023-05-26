@@ -25,10 +25,10 @@ def calcBackgound(VideoPath, reduc, Save=None):
     while True:
         ret, f = cap.read()
         if not ret: break
-        # cv2.imshow('Main Video', cv2.resize(f, (f.shape[1]// reduc , f.shape[0] // reduc)))
+        cv2.imshow('Main Video', cv2.resize(f, (f.shape[1]// reduc , f.shape[0] // reduc)))
         cv2.accumulateWeighted(f, img_bkgd, 0.01)
         res2 = cv2.convertScaleAbs(img_bkgd)
-        # cv2.imshow('When you feel the background is good enough, press ESC to terminate and save the background.', cv2.resize(res2, (res2.shape[1]// reduc , res2.shape[0] // reduc)))
+        cv2.imshow('When you feel the background is good enough, press ESC to terminate and save the background.', cv2.resize(res2, (res2.shape[1]// reduc , res2.shape[0] // reduc)))
         k = cv2.waitKey(20)
         if k == 27: break
     if Save: cv2.imwrite(Save, res2)
