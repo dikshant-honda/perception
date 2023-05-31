@@ -3,6 +3,7 @@ import sys
 import cv2
 import numpy as np
 import torch
+import torch.backends.cudnn as cudnn
 from TDNet import Utils
 from TDNet import Calibration
 
@@ -18,8 +19,6 @@ class YOLOv5:
                 ):
         # check_requirements(exclude=('tensorboard', 'thop'))
         sys.path.insert(1, root)
-        import torch
-        import torch.backends.cudnn as cudnn
         self.torch = torch
     # try:
         from models.common import DetectMultiBackend

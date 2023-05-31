@@ -67,6 +67,20 @@ def project(M, p):
 
 # ------------------------------------- Region of Interest Determination -------------------------------------
 
+def getROI(image, Save=None):
+    while True:
+        roi, coords , roiImage = os.getROI('Select a Region of Interst for caliibration | Actions: Space = OK,  r = Retry |', image).run()
+        zeroDim = False
+        for i in roi.shape:
+            if i ==0: zeroDim = True
+        if zeroDim: continue
+        cv2.imshow('Your Region of Interrest | Actions: Space = OK,  r = Retry |', roi)
+        k = cv2.waitKey(0)
+        if k%256 == R: cv2.destroyAllWindows(); continue
+        elif k%256 == SPACE: cv2.destroyAllWindows(); break
+    if Save: cv2.imwrite(Save, roiImage)
+    return roi, coords
+
 def applyROI(coord, roiCoord, reverse=False):
     x1, y1, x2, y2 = coord
     [sX, sY], [eX, eY] = roiCoord
