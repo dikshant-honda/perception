@@ -41,10 +41,9 @@ if __name__ == "__main__":
     background_folder = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/"
     video_file = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/test2.mp4"
     background_file = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/background_2.jpg"
-    # for folder in os.listdir(videos_folder):
-    #     print("removing background from:", folder)
-    #     video_path = videos_folder+folder
-    #     background_path = background_folder+folder+".jpg"
-    #     calcBackground(video_path, 1, background_path)
-    (video_file)
-    calcBackground(video_file, 1, background_file)
+    for folder in os.listdir(videos_folder):
+        print("removing background from:", folder)
+        video_path = videos_folder+folder
+        background_path = background_folder+folder+".jpg"
+        calcBackground(video_path, 1, background_path)
+    # calcBackground(video_file, 1, background_file)
