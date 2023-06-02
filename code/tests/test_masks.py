@@ -57,27 +57,23 @@ def drawBEVMask(image, coords, Save=None):
 
 if __name__ == "__main__":
     img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
+    height, width = len(img), len(img[0])
 
     # calibration parameters
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    edges = cv2.Canny(blurred, 50, 150)  
+    ROI_coords = [[0, 0], [width, height]]
+    BEV_coords = [[-width/3, 0], [4*width/3, 0], [width/3, height], [2*width/3, height]]
 
-    height, width = edges.shape[:2]
-    ROI_coords = [[0, 0], [2*height, 2*width]]
-    BEV_coords = [[width/100, height-1], [width/3, height/100], [2*width/3, height/100], [width-1, height-1]]
-    print(BEV_coords)
     # original image
     cv2.imshow("camera view", img)
 
     # preprocessing
     roi = putROI(img, ROI_coords)
     cv2.imshow("ROI", roi)
-    bev = birds_eye(img, BEV_coords, [height, width]).bird
+    bev = birds_eye(roi, BEV_coords, ).bird
     cv2.imshow("BEV", bev)
     roi_mask = drawROIMask(roi, ROI_coords)
     cv2.imshow("ROI mask", roi_mask)
-    # bev_mask = drawBEVMask(bev, BEV_coords)
-    # cv2.imshow("BEV mask", bev_mask)
+    bev_mask = drawBEVMask(bev, BEV_coords)
+    cv2.imshow("BEV mask", bev_mask)
 
     cv2.waitKey(0)
