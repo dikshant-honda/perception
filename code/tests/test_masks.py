@@ -40,7 +40,7 @@ def putROI(image, roiCoord):
     return roi
 
 # ------------------------------------- Generating Masks ----------------------------------------------------------
-def getMask(image, coords, Save=None):
+def drawROIMask(image, coords, Save=None):
     [sX, sY], [eX, eY] = coords
     mask = np.zeros_like(image)
     mask[sY:eY, sX:eX, :] = 255
@@ -62,13 +62,15 @@ if __name__ == "__main__":
 
     # original image
     img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
-    # cv2.imshow("camera view", img)
+    cv2.imshow("camera view", img)
 
-    # processing
+    # preprocessing
     roi = putROI(img, ROI_coords)
     cv2.imshow("ROI", roi)
     bev = birds_eye(img, BEV_coords, [1048, 1028]).bird
-    # cv2.imshow("BEV", bev)
-    mask = drawBEVMask(bev, BEV_coords)
-    # cv2.imshow("BEV mask", mask)
+    cv2.imshow("BEV", bev)
+    roi_mask = drawROIMask(roi, ROI_coords)
+    cv2.imshow("ROI mask", roi_mask)
+    bev_mask = drawBEVMask(bev, BEV_coords)
+    cv2.imshow("BEV mask", bev_mask)
     cv2.waitKey(10000)
