@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # calibration parameters
     ROI_coords = [[0, 0], [width, height]]
-    BEV_coords = [[-width/3, 0], [4*width/3, 0], [width/3, height], [2*width/3, height]]
+    BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
 
     # original image
     cv2.imshow("camera view", img)
