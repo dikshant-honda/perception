@@ -58,9 +58,9 @@ def drawBEVMask(image, coords, Save=None):
 def road_edges(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    edges = cv2.Canny(blurred, 100 , 150, apertureSize = 3)  
+    edges = cv2.Canny(blurred, 140 , 250, apertureSize = 3)  
     height, width = edges.shape[:2]
-    roi_vertices = np.array([[(width/10, height), (width/3, height/4), (2*width/3, height/4), (9*width/10, height)]], dtype=np.int32)
+    roi_vertices = np.array([[(0, height), (width/3, height/10), (2*width/3, height/10), (width, height)]], dtype=np.int32)
     mask = np.zeros_like(edges)
     cv2.fillPoly(mask, roi_vertices, 255)
     masked_edges = cv2.bitwise_and(edges, mask)
@@ -88,7 +88,9 @@ if __name__ == "__main__":
     cv2.imshow("ROI mask", roi_mask)
     bev_mask = drawBEVMask(bev, BEV_coords)
     cv2.imshow("BEV mask", bev_mask)
+    road_border = road_edges(img)
+    cv2.imshow("Road border in image frame", road_border)
     road_border = road_edges(bev)
-    cv2.imshow("Road border", road_border)
+    cv2.imshow("Road border in BEV frame", road_border)
     
     cv2.waitKey(0)
