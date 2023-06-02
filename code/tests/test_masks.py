@@ -54,6 +54,19 @@ def drawBEVMask(image, coords, Save=None):
     if Save: cv2.imwrite(Save, mask)
     return mask[:,:,0]
 
+# ------------------------------------- Road Edge Masks ---------------------------------------------------------------
+def road_edges(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    edges = cv2.Canny(blurred, 100 , 150, apertureSize = 3)  
+    height, width = edges.shape[:2]
+    roi_vertices = np.array([[(width/10, height), (width/3, height/4), (2*width/3, height/4), (9*width/10, height)]], dtype=np.int32)
+    mask = np.zeros_like(edges)
+    cv2.fillPoly(mask, roi_vertices, 255)
+    masked_edges = cv2.bitwise_and(edges, mask)
+    road_edges = masked_edges
+
+    return road_edges
 
 if __name__ == "__main__":
     img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
@@ -61,7 +74,7 @@ if __name__ == "__main__":
 
     # calibration parameters
     ROI_coords = [[0, 0], [width, height]]
-    BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
+    BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
 
     # original image
     cv2.imshow("camera view", img)
@@ -75,5 +88,7 @@ if __name__ == "__main__":
     cv2.imshow("ROI mask", roi_mask)
     bev_mask = drawBEVMask(bev, BEV_coords)
     cv2.imshow("BEV mask", bev_mask)
-
+    road_border = road_edges(bev)
+    cv2.imshow("Road border", road_border)
+    
     cv2.waitKey(0)
