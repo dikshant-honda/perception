@@ -57,4 +57,9 @@ def project(M, p):
 
 
 if __name__ == "__main__":
-    pass
+    img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
+    cv2.imshow("camera view", img)
+    bev = birds_eye(img, [[17, -225], [1260, 422], [405, 899], [596, 949]], [1048, 1028])
+    bird = bev.bird
+    cv2.imshow("BEV", bird)
+    cv2.waitKey(100000)
