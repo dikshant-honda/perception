@@ -69,9 +69,9 @@ def ShowROI(image, roiCoord):
 
 
 if __name__ == "__main__":
-    background = cv2.imread("background.jpg")
-    # cv2.imshow("background", background)
+    background = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
+    cv2.imshow("background", background)
     rois = putROI(background, [[0, 0], [1920, 1080]])
     show = ShowROI(background, [[0, 0], [1920, 1080]])
-    cv2.imshow("test", show)
+    cv2.imshow("ROI", show)
     cv2.waitKey(10000)
