@@ -62,4 +62,5 @@ if __name__ == "__main__":
     bev = birds_eye(img, [[17, -225], [1260, 422], [405, 899], [596, 949]], [1048, 1028])
     bird = bev.bird
     cv2.imshow("BEV", bird)
-    cv2.waitKey(100000)
+    
+    cv2.waitKey(0)

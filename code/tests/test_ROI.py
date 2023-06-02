@@ -34,4 +34,5 @@ if __name__ == "__main__":
     rois = putROI(background, [[0, 0], [1920, 1080]])
     show = ShowROI(background, [[0, 0], [1920, 1080]])
     cv2.imshow("ROI", show)
-    cv2.waitKey(10000)
+    
+    cv2.waitKey(0)

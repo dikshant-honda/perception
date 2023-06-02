@@ -73,4 +73,5 @@ if __name__ == "__main__":
     cv2.imshow("ROI mask", roi_mask)
     bev_mask = drawBEVMask(bev, BEV_coords)
     cv2.imshow("BEV mask", bev_mask)
-    cv2.waitKey(10000)
+
+    cv2.waitKey(0)
