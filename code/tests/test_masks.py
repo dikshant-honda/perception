@@ -69,14 +69,15 @@ def road_edges(image):
     return road_edges
 
 if __name__ == "__main__":
-    img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/MVI_40141.mp4.jpg")
+    img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/AI_background.jpg")
     # img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/background_1.jpg")
     height, width = len(img), len(img[0])
 
     # calibration parameters
     ROI_coords = [[0, 0], [width, height]]
-    BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
-    BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
+    BEV_coords = [[0, 0], [int(width),0], [int(width/2-100), int(height)], [int(width/2+100), int(height)]]
+    # BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
+    # BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
 
     # original image
     cv2.imshow("camera view", img)
