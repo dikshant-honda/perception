@@ -76,7 +76,7 @@ if __name__ == "__main__":
     # calibration parameters
     ROI_coords = [[0, 0], [width, height]]
     BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
-    # BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
+    BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
 
     # original image
     cv2.imshow("camera view", img)
@@ -94,5 +94,10 @@ if __name__ == "__main__":
     cv2.imshow("Road border in image frame", road_border)
     road_border = road_edges(bev)
     cv2.imshow("Road border in BEV frame", road_border)
+
+    # combined view of camera view and BEV
+    bev = cv2.resize(bev, (img.shape[1], img.shape[0]))
+    comparison = np.hstack((img, bev))
+    cv2.imshow("Camera View vs. Bird's-eye View", comparison)
     
     cv2.waitKey(0)
