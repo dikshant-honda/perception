@@ -204,7 +204,7 @@ class Load:
                 for it in RuntimeCfg['Config update']:
                     if not RuntimeCfg['Config update'][it]:
                         self.cfg[it] = _cfg[it]
-            with open(_Config, 'w') as jcfg: json.dump(self.cfg, jcfg) ;print('::: Configration Saved.')
+            with open(_Config, 'w') as jcfg: json.dump(self.cfg, jcfg, indent=4) ;print('::: Configration Saved.')
     ##########################################################################
     
     
