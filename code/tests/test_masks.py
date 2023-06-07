@@ -68,6 +68,20 @@ def road_edges(image):
 
     return road_edges
 
+def road_masks(image):
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+    lower_bound = np.array([0, 0, 0])
+    upper_bound = np.array([100, 100, 100])
+    road_mask = cv2.inRange(hsv_image, lower_bound, upper_bound)
+
+    kernel = np.ones((5, 5), np.uint8)
+    road_mask = cv2.morphologyEx(road_mask, cv2.MORPH_OPEN, kernel)
+    road_mask = cv2.morphologyEx(road_mask, cv2.MORPH_CLOSE, kernel)
+
+    return road_mask
+
+# ------------------------------------------------------- main --------------------------------------------------------------
 if __name__ == "__main__":
     img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Background.bmp")
     # img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/background_1.jpg")
@@ -80,26 +94,28 @@ if __name__ == "__main__":
     # BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
 
     # original image
-    cv2.imshow("camera view", img)
+    # cv2.imshow("camera view", img)
 
-    # preprocessing
-    roi = putROI(img, ROI_coords)
-    cv2.imshow("ROI", roi)
-    bev = birds_eye(roi, BEV_coords, ).bird
-    cv2.imshow("BEV", bev)
-    cv2.imwrite("Bird Eye View.bmp", bev)
-    roi_mask = drawROIMask(roi, ROI_coords, "ROI Mask.bmp")
-    cv2.imshow("ROI mask", roi_mask)
-    bev_mask = drawBEVMask(bev, BEV_coords, "ROI BEV Mask.bmp")
-    cv2.imshow("BEV mask", bev_mask)
-    road_border = road_edges(img)
-    cv2.imshow("Road border in image frame", road_border)
-    road_border = road_edges(bev)
-    cv2.imshow("Road border in BEV frame", road_border)
+    # # preprocessing
+    # roi = putROI(img, ROI_coords)
+    # cv2.imshow("ROI", roi)
+    # bev = birds_eye(roi, BEV_coords, ).bird
+    # cv2.imshow("BEV", bev)
+    # cv2.imwrite("Bird Eye View.bmp", bev)
+    # roi_mask = drawROIMask(roi, ROI_coords, "ROI Mask.bmp")
+    # cv2.imshow("ROI mask", roi_mask)
+    # bev_mask = drawBEVMask(bev, BEV_coords, "ROI BEV Mask.bmp")
+    # cv2.imshow("BEV mask", bev_mask)
+    # road_border = road_edges(img)
+    # cv2.imshow("Road border in image frame", road_border)
+    # road_border = road_edges(bev)
+    # cv2.imshow("Road border in BEV frame", road_border)
+    road_mask = road_masks(img)
+    cv2.imshow("Road mask in image frame", road_mask)
 
     # combined view of camera view and BEV
-    bev = cv2.resize(bev, (img.shape[1], img.shape[0]))
-    comparison = np.hstack((img, bev))
-    cv2.imshow("Camera View vs. Bird's-eye View", comparison)
+    # bev = cv2.resize(bev, (img.shape[1], img.shape[0]))
+    # comparison = np.hstack((img, bev))
+    # cv2.imshow("Camera View vs. Bird's-eye View", comparison)
     
     cv2.waitKey(0)
