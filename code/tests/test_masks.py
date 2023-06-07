@@ -69,7 +69,7 @@ def road_edges(image):
     return road_edges
 
 if __name__ == "__main__":
-    img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/AI_background.jpg")
+    img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Background.bmp")
     # img = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/background_1.jpg")
     height, width = len(img), len(img[0])
 
