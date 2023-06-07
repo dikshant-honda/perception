@@ -75,7 +75,7 @@ class Load:
                 'Show Window Size'        : (1,1),
                 'Reduction Factor'        : 1,
                 'Calibration Mode'        : 'Semi',
-                'Environment Mode'        : 'Visual Map', # Satellite, BEV
+                'Environment Mode'        : 'Satellite', #Visual Map, Satellite, BEV
                 ##############################
                 'Real Object Size'        : 1,
                 'Use Visual Map'          : 1,
