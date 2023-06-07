@@ -87,9 +87,10 @@ if __name__ == "__main__":
     cv2.imshow("ROI", roi)
     bev = birds_eye(roi, BEV_coords, ).bird
     cv2.imshow("BEV", bev)
-    roi_mask = drawROIMask(roi, ROI_coords)
+    cv2.imwrite("Bird Eye View.bmp", bev)
+    roi_mask = drawROIMask(roi, ROI_coords, "ROI Mask.bmp")
     cv2.imshow("ROI mask", roi_mask)
-    bev_mask = drawBEVMask(bev, BEV_coords)
+    bev_mask = drawBEVMask(bev, BEV_coords, "ROI BEV Mask.bmp")
     cv2.imshow("BEV mask", bev_mask)
     road_border = road_edges(img)
     cv2.imshow("Road border in image frame", road_border)
