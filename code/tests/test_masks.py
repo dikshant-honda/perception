@@ -72,10 +72,10 @@ def road_masks(image):
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     lower_bound = np.array([0, 0, 0])
-    upper_bound = np.array([250, 250, 250])
+    upper_bound = np.array([1, 1, 1])
     road_mask = cv2.inRange(hsv_image, lower_bound, upper_bound)
 
-    kernel = np.ones((4, 4), np.uint8)
+    kernel = np.ones((1, 1), np.uint8)
     road_mask = cv2.morphologyEx(road_mask, cv2.MORPH_OPEN, kernel)
     road_mask = cv2.morphologyEx(road_mask, cv2.MORPH_CLOSE, kernel)
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     # calibration parameters
     ROI_coords = [[0, 0], [width, height]]
-    BEV_coords = [[0, 0], [int(width),0], [int(width/2-100), int(height)], [int(width/2+100), int(height)]]
+    BEV_coords = [[0, 0], [int(width),0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
     # BEV_coords = [[int(-width/4), 0], [int(5*width/4), 0], [int(width/3), int(height)], [int(2*width/3), int(height)]]
     # BEV_coords = [[int(-width/2), 0], [int(3*width/2), 0], [int(width/4), int(height)], [int(3*width/4), int(height)]]
 
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     cv2.imshow("Road border in image frame", road_border)
     road_border = road_edges(bev)
     cv2.imshow("Road border in BEV frame", road_border)
-    road_mask = road_masks(cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Road mask.png"))
+    road_mask = road_masks(cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Road Mask.png"))
     cv2.imshow("Road mask in image frame", road_mask)
     cv2.imwrite("Road mask.bmp", road_mask)
 
