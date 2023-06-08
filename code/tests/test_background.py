@@ -39,7 +39,7 @@ def calcBackground(VideoPath, reduce, Save=None):
 if __name__ == "__main__":
     # videos_folder = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_videos/"
     # background_folder = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/ua_detrac_background/"
-    video_file = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/AIC22_Track1_MTMC_Tracking/train/S01/c002/vdo.avi"
+    video_file = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/data/AIC22_Track1_MTMC_Tracking/train/S01/c004/vdo.avi"
     background_file = "/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Background.bmp"
     # for folder in os.listdir(videos_folder):
     #     print("removing background from:", folder)
