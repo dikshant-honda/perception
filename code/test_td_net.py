@@ -28,7 +28,7 @@ class Load:
                 'Environment Map': {'1/0': 1, 'Show':0 , 'Save':0 , 'Rithm':100 , 'Video':1, 'Show Trajectory': 1, 'Show Parcked': 1, 'Show Legend': 1, 'Show Frame Counter':1, 'Show ID': 0},
                 'CONFIGS':{
                     'Show Caption'     : 1,
-                    'Show Speed'       : 0,
+                    'Show Speed'       : 1,
                     'Speed Unit Text'  : ' mph',
                     'Speed Text Color' : (0,0,0),
                     'vSpeed Text Color': (0,0,200),
