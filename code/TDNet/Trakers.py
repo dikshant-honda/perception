@@ -111,6 +111,8 @@ class mKalmanFilter:
     def predict(self):
         self.X = self.F @ self.X 
         self.P = self.F @ self.P @ self.F.T + self.Q
+        print(self.X)
+        print("**********************************************************")
         return self.X
 
     def correct(self, Z):      
