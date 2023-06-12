@@ -1,11 +1,13 @@
+import argparse
+import json
+import os
+import time
+
 import cv2
 import numpy as np
-import time
-import os
-import json
-import argparse
-from tqdm import tqdm
 import TDNet as TN
+from tqdm import tqdm
+
 
 class Load:
     def __init__(self, Input, opt, Batch=False):
@@ -408,6 +410,9 @@ class Load:
                     if len(_pedest[id]['locationBEV']) > self.cfg['System']['Buffers']['Pedest']['locationBEV']:_pedest[id]['locationBEV'].pop(0)
                     if len(_pedest[id]['position']) > self.cfg['System']['Buffers']['Pedest']['position']:_pedest[id]['position'].pop(0)
 
+                ''' tests '''
+                print("type:", c, "vehicle id:", id, "position:", x, y)
+
             ''' History '''
             TN.Core.manageHistory(_vehicle, _pedest, Cache['Available ID'], self.cfg['System']['Maximum Vehicle Number'], self.cfg['System']['Maximum Pedest Number'])
 
@@ -538,8 +543,6 @@ class Load:
                         if self.cfg['Visualizer']['3D Detection']['Save']: cv2.imwrite(self.OutFigure + f'/{frame} 3D.png', imgBox3D)
 
             k=cv2.waitKey(1)
-            print("number of vehicles:", Cache['Num of Vehicle'][-1], "number of pedestrians:", Cache["Num of Pedest"][-1])
-            print()
             if k%256 == 27: cv2.destroyAllWindows(); break
         for v in Videos: Videos[v].release()
         print(':::: Done.')
