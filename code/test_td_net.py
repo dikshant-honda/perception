@@ -428,7 +428,9 @@ class Load:
 
             ''' tests '''
             for id, data in _vehicle.items():
-                print("vehicle type:", data["type"], "vehicle id:", id, "velocity:", data["k_velocity"][-1])
+                print("vehicle type:", data["type"], "vehicle id:", id, "position:", data["position"][-1][0], data["position"][-1][1],"velocity:", data["k_velocity"][-1])
+            for id, data in _pedest.items():
+                print("pedestrian", "pedestrian id:", id, "position:", data["position"][-1][0], data["position"][-1][1],"velocity:", data["speed"])
 
             if self.cfg['Figure']['1/0']:
                 if self.cfg['Figure']['Counter']['1/0']:
