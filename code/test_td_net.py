@@ -410,9 +410,6 @@ class Load:
                     if len(_pedest[id]['locationBEV']) > self.cfg['System']['Buffers']['Pedest']['locationBEV']:_pedest[id]['locationBEV'].pop(0)
                     if len(_pedest[id]['position']) > self.cfg['System']['Buffers']['Pedest']['position']:_pedest[id]['position'].pop(0)
 
-                ''' tests '''
-                print("type:", c, "vehicle id:", id, "position:", x, y)
-
             ''' History '''
             TN.Core.manageHistory(_vehicle, _pedest, Cache['Available ID'], self.cfg['System']['Maximum Vehicle Number'], self.cfg['System']['Maximum Pedest Number'])
 
@@ -428,7 +425,11 @@ class Load:
 
             ''' Maching 2 Overlaped '''
             TN.Core.overlapMaching_onBird(_vehicle,  self.cfg['System']['Overlap Search (IOU)'])
-    
+
+            ''' tests '''
+            for id, data in _vehicle.items():
+                print("vehicle type:", data["type"], "vehicle id:", id, "velocity:", data["k_velocity"][-1])
+
             if self.cfg['Figure']['1/0']:
                 if self.cfg['Figure']['Counter']['1/0']:
                     Cache['Num of Vehicle'].append(len(Cache['Current Vehicles']))
