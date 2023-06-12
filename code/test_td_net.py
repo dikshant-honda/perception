@@ -538,7 +538,7 @@ class Load:
                         if self.cfg['Visualizer']['3D Detection']['Save']: cv2.imwrite(self.OutFigure + f'/{frame} 3D.png', imgBox3D)
 
             k=cv2.waitKey(1)
-            print(Cache)
+            print("number of vehicles:", Cache['Num of Vehicle'], "number of pedestrians:", Cache["Num of Pedest"])
             if k%256 == 27: cv2.destroyAllWindows(); break
         for v in Videos: Videos[v].release()
         print(':::: Done.')
