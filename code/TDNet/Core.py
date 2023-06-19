@@ -287,7 +287,7 @@ def overlapMaching_onBird(_vehicle, searchArea):
 
 def manageHistory(_vehicle, _pedest, availID, MaximumVehicleNumber, MaximumPedestNumber):
     for id, data in _vehicle.items():
-        print(id, data["type"], data["position"][-1], data["velocity"], data["angle"])
+        print(id, data["type"], data["position"][-1], data["speed"], data["angle"])
     # print("vehicles data:", _vehicle)
     for id, data in _pedest.items():
         print(id, "pedest", data["position"][-1], data["speed"])
