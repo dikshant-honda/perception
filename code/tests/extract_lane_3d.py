@@ -24,6 +24,13 @@ def convert_2D_to_3D(image):
     # detect the corner points   -- 2D --> 3D
     ret, corners = cv2.findChessboardCorners(gray, (4, 3), None)
 
+    pattern_points = np.array([
+        [0, 0, 0],  # top-left
+        [1, 0, 0],  # top-right
+        [1, 1, 0],  # bottom-right
+        [0, 1, 0],  # bottom-left
+    ], dtype=np.float32)
+
     if ret:
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
         corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
@@ -48,24 +55,19 @@ if __name__ == "__main__":
     # Load the image
     image = cv2.imread("/home/dikshant/3D-Net-Monocular-3D-Object-Recognition-for-Traffic-Monitoring/code/tests/Road mask.png")
 
-    pattern_points = np.array([
-        [0, 0, 0],  # top-left
-        [1, 0, 0],  # top-right
-        [1, 1, 0],  # bottom-right
-        [0, 1, 0],  # bottom-left
-    ], dtype=np.float32)
-
     road_edges = get_lanes(image)
 
     rotation_matrix, tvec = convert_2D_to_3D(image)
 
     # Compute the 3D position of a point in the real world given its image coordinates
-    image_point = (100, 200)  # Example image coordinates
-    image_point_homogeneous = np.array([[image_point[0]], [image_point[1]], [1]], dtype=np.float32)
-    inverse_rotation_matrix = np.linalg.inv(rotation_matrix)
-    inverse_camera_matrix = np.linalg.inv(camera_matrix)
-    world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
-    world_point = world_point_homogeneous[:3].flatten() * tvec[2]
+    lane_coordinates = []
+    for x,y in road_edges:
+        image_point = (x, y)
+        image_point_homogeneous = np.array([[image_point[0]], [image_point[1]], [1]], dtype=np.float32)
+        inverse_rotation_matrix = np.linalg.inv(rotation_matrix)
+        inverse_camera_matrix = np.linalg.inv(camera_matrix)
+        world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
+        world_point = world_point_homogeneous[:3].flatten() * tvec[2]
+        lane_coordinates.append(world_point)
 
-    print("Real-world coordinates:", world_point)
-
+    # print(lane_coordinates)
