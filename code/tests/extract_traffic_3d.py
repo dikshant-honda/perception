@@ -50,7 +50,7 @@ if __name__ == "__main__":
         rotation_matrix, tvec = convert_2D_to_3D(frame)  # test later if both matrices are similar for lanes extraction and traffic participants info ectraction
 
         # add the traffic participants info from the perception system
-        traffic_participants = {}                       # dict type: {'id': [position, velocity, orientation]}
+        traffic_participants = {}                       # dict type: {'id': [position, velocity, orientation, type]}
 
         traffic_participants_3D = {}
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
             world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
             world_point = world_point_homogeneous[:3].flatten() * tvec[2]
 
-            traffic_participants_3D[key] = [world_point, val[1], val[2]]
+            traffic_participants_3D[key] = [world_point, val[1], val[2], val[3]]
 
     # end the stream
     video_stream.release()
