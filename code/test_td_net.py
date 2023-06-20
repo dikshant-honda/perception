@@ -426,6 +426,13 @@ class Load:
             ''' Maching 2 Overlaped '''
             TN.Core.overlapMaching_onBird(_vehicle,  self.cfg['System']['Overlap Search (IOU)'])
 
+            for id, data in _vehicle.items():
+                print(id, data["type"], data["position"][-1], data["speed"], data["angle"])
+                # traffic_participants[id] = [data["type"], data["position"][-1], data["speed"], data["angle"]]
+            for id, data in _pedest.items():
+                print(id, "pedest", data["position"][-1], data["speed"])
+                # traffic_participants[id] = ["pedest", data["position"][-1], data["speed"], ""]
+                print("------------------------------------------------------------------------------------")
             if self.cfg['Figure']['1/0']:
                 if self.cfg['Figure']['Counter']['1/0']:
                     Cache['Num of Vehicle'].append(len(Cache['Current Vehicles']))
