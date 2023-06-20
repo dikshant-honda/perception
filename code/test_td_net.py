@@ -207,8 +207,59 @@ class Load:
                     if not RuntimeCfg['Config update'][it]:
                         self.cfg[it] = _cfg[it]
             with open(_Config, 'w') as jcfg: json.dump(self.cfg, jcfg, indent=4) ;print('::: Configration Saved.')
-    ##########################################################################
-    
+
+    # ---------------------------------------------------2d to 3D conversion -----------------------------------------------------
+    def convert_2D_to_3D(self, image):
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # detect the corner points   -- 2D --> 3D
+        ret, corners = cv2.findChessboardCorners(gray, (4, 3), None)
+
+        pattern_points = np.array([
+            [0, 0, 0],  # top-left
+            [1, 0, 0],  # top-right
+            [1, 1, 0],  # bottom-right
+            [0, 1, 0],  # bottom-left
+        ], dtype=np.float32)
+
+        if ret:
+            criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+            corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+            undistorted_corners = cv2.undistortPoints(corners, camera_matrix, dist_coeffs)
+
+            # Perform triangulation
+            rvec, tvec = np.zeros((3, 1), dtype=np.float32), np.zeros((3, 1), dtype=np.float32)
+            _, rvec, tvec = cv2.solvePnP(pattern_points, undistorted_corners, camera_matrix, dist_coeffs, rvec, tvec)
+            rotation_matrix, _ = cv2.Rodrigues(rvec)
+
+            return rotation_matrix, tvec
+
+        else:
+            print("Chessboard corners not found in the image.")
+            return _, _
+        
+    # ---------------------------------------------- get coordinates in real world------------------------------------------------
+    def get_3D_coords(self, frame, traffic_participants):
+        rotation_matrix, tvec = self.convert_2D_to_3D(frame)  # test later if both matrices are similar for lanes extraction and traffic participants info ectraction
+
+        # add the traffic participants info from the perception system # dict type: {'id': [position, velocity, orientation, type]}
+        # define a dict for 3D points storage
+        traffic_participants_3D = {}
+
+        # Compute the 3D position of a point in the real world given its image coordinates
+        for key, val in traffic_participants.items():
+            image_point = val[0]
+            image_point_homogeneous = np.array([[image_point[0]], [image_point[1]], [1]], dtype=np.float32)
+            inverse_rotation_matrix = np.linalg.inv(rotation_matrix)
+            inverse_camera_matrix = np.linalg.inv(camera_matrix)
+            world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
+            world_point = world_point_homogeneous[:3].flatten() * tvec[2]
+
+            traffic_participants_3D[key] = [world_point, val[1], val[2], val[3]]
+
+        return traffic_participants_3D
+
+    # --------------------------------------------------- main run function ------------------------------------------------------    
     
     def Run(self):
         Stream = TN.Utils.Video(self.Input, lenght_of_video = self.EndAt)
@@ -426,13 +477,17 @@ class Load:
             ''' Maching 2 Overlaped '''
             TN.Core.overlapMaching_onBird(_vehicle,  self.cfg['System']['Overlap Search (IOU)'])
 
+            ''' get traffic participants info in real world '''
+            traffic_participants = {}
             for id, data in _vehicle.items():
-                print(id, data["type"], data["position"][-1], data["speed"], data["angle"])
-                # traffic_participants[id] = [data["type"], data["position"][-1], data["speed"], data["angle"]]
+                # print(id, data["position"][-1], data["speed"], data["angle"], data["type"])
+                traffic_participants[id] = [data["position"][-1], data["speed"], data["angle"], data["type"]]
             for id, data in _pedest.items():
-                print(id, "pedest", data["position"][-1], data["speed"])
-                # traffic_participants[id] = ["pedest", data["position"][-1], data["speed"], ""]
-                print("------------------------------------------------------------------------------------")
+                # print(id, data["position"][-1], data["speed"], "pedest")
+                traffic_participants[id] = [data["position"][-1], data["speed"], "", "pedest"]
+            # print("------------------------------------------------------------------------------------")
+            traffic_participants_3D = self.get_3D_coords(frame, traffic_participants)
+
             if self.cfg['Figure']['1/0']:
                 if self.cfg['Figure']['Counter']['1/0']:
                     Cache['Num of Vehicle'].append(len(Cache['Current Vehicles']))
@@ -594,6 +649,10 @@ def main(opt):
     else: print('Use --source [file/folder]')
 
 if __name__ == "__main__":
+    # Load the camera matrix and distortion coefficients obtained from calibration
+    camera_matrix = np.load('camera_matrix.npy')
+    dist_coeffs = np.load('dist_coeffs.npy')
+
     opt = parse_opt()
     main(opt)
   
