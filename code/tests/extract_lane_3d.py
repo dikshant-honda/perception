@@ -69,5 +69,3 @@ if __name__ == "__main__":
         world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
         world_point = world_point_homogeneous[:3].flatten() * tvec[2]
         lane_coordinates.append(world_point)
-
-    # print(lane_coordinates)
