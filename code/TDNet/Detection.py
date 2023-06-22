@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-from TDNet import Utils
-from TDNet import Calibration
+from perception.code.TDNet import Utils
+from perception.code.TDNet import Calibration
 
 
 class YOLOv5:

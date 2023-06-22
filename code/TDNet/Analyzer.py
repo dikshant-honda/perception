@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvas
 
-from TDNet import Utils
+from perception.code.TDNet import Utils
 
 np.seterr(divide='ignore', invalid='ignore')
 

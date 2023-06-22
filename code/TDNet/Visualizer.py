@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-from TDNet.Utils import *
-from TDNet.Calibration import *
+from perception.code.TDNet.Utils import *
+from perception.code.TDNet.Calibration import *
 
 cfg = dict()
 
