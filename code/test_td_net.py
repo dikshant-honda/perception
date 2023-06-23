@@ -10,7 +10,7 @@ from perception.code import TDNet as TN
 from tqdm import tqdm
 
 
-class Load:
+class detect:
     def __init__(self, Input, opt, Batch=False):
         StartFrom=opt.start; EndAt=opt.end
         RuntimeCfg={
@@ -604,6 +604,7 @@ class Load:
 
             k=cv2.waitKey(1)
             if k%256 == 27: cv2.destroyAllWindows(); break
+            return traffic_participants_3D
         for v in Videos: Videos[v].release()
         print(':::: Done.')
         return 
@@ -633,7 +634,7 @@ def main(opt):
                     suffix = os.path.basename(entry.path).split('.')[1]
                     if suffix in supSuffix:
                         print(f">>>>>>>>>> Start item : {entry.name}")
-                        Load(entry.path, opt, Batch=True).Run()
+                        detect(entry.path, opt, Batch=True).Run()
                     else: print(f'Format not support for {os.path.basename(entry.path)}, supported formats are {supSuffix}')
         else:
             if os.path.exists(opt.source):
@@ -644,7 +645,7 @@ def main(opt):
                 suffix = os.path.basename(opt.source).split('.')[1]
                 if suffix in supSuffix:
                     print(f">>>>>>>>>> Start item : {opt.source}")
-                    Load(opt.source, opt).Run()
+                    detect(opt.source, opt).Run()
                 else: print(f'Format not support for {os.path.basename(opt.source)}, supported formats are {supSuffix}')                
             else: print(f'{opt.source} Not Found!')
     else: print('Use --source [file/folder]')
