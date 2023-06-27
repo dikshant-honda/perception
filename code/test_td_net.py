@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 
 class detect:
-    def __init__(self, Input, opt, Batch=False):
+    def __init__(self, Input, opt, camera_matrix, dist_coeffs,Batch=False):
         StartFrom=opt.start; EndAt=opt.end
         RuntimeCfg={
             'Config load'         : 1,
@@ -149,6 +149,8 @@ class detect:
         self.EndAt = EndAt
         self.OutVideo  = _Video
         self.OutFigure = _Figure
+        self.camera_matrix =camera_matrix
+        self.dist_coeffs = dist_coeffs
         self.Data ={'Background'     : None, # An image with the same size of the Camera
                     'Satellite'      : None, # An Image of Satellite
                     'Visual Map'     : None, # An image with the same size of Satellite image
@@ -226,11 +228,11 @@ class detect:
         if ret:
             criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
             corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-            undistorted_corners = cv2.undistortPoints(corners, camera_matrix, dist_coeffs)
+            undistorted_corners = cv2.undistortPoints(corners, self.camera_matrix, self.dist_coeffs)
 
             # Perform triangulation
             rvec, tvec = np.zeros((3, 1), dtype=np.float32), np.zeros((3, 1), dtype=np.float32)
-            _, rvec, tvec = cv2.solvePnP(pattern_points, undistorted_corners, camera_matrix, dist_coeffs, rvec, tvec)
+            _, rvec, tvec = cv2.solvePnP(pattern_points, undistorted_corners, self.camera_matrix, self.dist_coeffs, rvec, tvec)
             rotation_matrix, _ = cv2.Rodrigues(rvec)
 
             return rotation_matrix, tvec
@@ -252,7 +254,7 @@ class detect:
             image_point = val[0]
             image_point_homogeneous = np.array([[image_point[0]], [image_point[1]], [1]], dtype=np.float32)
             inverse_rotation_matrix = np.linalg.inv(rotation_matrix)
-            inverse_camera_matrix = np.linalg.inv(camera_matrix)
+            inverse_camera_matrix = np.linalg.inv(self.camera_matrix)
             world_point_homogeneous = np.matmul(np.matmul(inverse_rotation_matrix, inverse_camera_matrix), image_point_homogeneous)
             world_point = world_point_homogeneous[:3].flatten() * tvec[2]
 
@@ -608,54 +610,4 @@ class detect:
         for v in Videos: Videos[v].release()
         print(':::: Done.')
         return 
-
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--source', type=str, help='file/dir')
-    parser.add_argument('--yolo', default=5, type=int, help='Choose YOLO version [4, 5, 7]. (Default is 5)')
-    parser.add_argument('--root', default='YOLOv5', type=str, help='Choose detector\'s root folder (e.g. C:/YOLOv5). (Default is the current path)')
-    parser.add_argument('--save', default='results', type=str, help='Choose address folder for saving results')
-    parser.add_argument('--start', default=0, type=int, help='Start frame')
-    parser.add_argument('--end', default=-1, type=int, help='End frame')
-    parser.add_argument('--weights', default='yolov5l.pt', type=str, help='Address of trained weights. (Default is [yolov5l.pt])')
-    parser.add_argument('--cfg', default=None, type=str, help='Address of YOLOv4 network architecture. (Default is [./cfg/yolov4.cgf])')
-    parser.add_argument('--data', default=None, type=str, help='Address of YOLOv4 trained model data. (Default is [./cfg/coco.data]')
-    opt = parser.parse_args()
-    return opt
-
-def main(opt):
-    if opt.source:
-        supSuffix =  ['mp4', 'avi', 'mpg', 'mov']
-        if os.path.isdir(opt.source):  
-            print("\nIt is a directory")
-            if not os.path.exists(opt.source + '/Config'): print('::: Configuration Not Found!'); return 0
-            for entry in os.scandir(opt.source):
-                if entry.is_file():
-                    suffix = os.path.basename(entry.path).split('.')[1]
-                    if suffix in supSuffix:
-                        print(f">>>>>>>>>> Start item : {entry.name}")
-                        detect(entry.path, opt, Batch=True).Run()
-                    else: print(f'Format not support for {os.path.basename(entry.path)}, supported formats are {supSuffix}')
-        else:
-            if os.path.exists(opt.source):
-                root = os.path.dirname(os.path.abspath(opt.source))
-                filename = os.path.basename(opt.source).split('.')[0]
-                paths = root + '/' + filename
-                if not os.path.exists(paths + '/config.json'): print('::: Configuration Not Found!'); return 0
-                suffix = os.path.basename(opt.source).split('.')[1]
-                if suffix in supSuffix:
-                    print(f">>>>>>>>>> Start item : {opt.source}")
-                    detect(opt.source, opt).Run()
-                else: print(f'Format not support for {os.path.basename(opt.source)}, supported formats are {supSuffix}')                
-            else: print(f'{opt.source} Not Found!')
-    else: print('Use --source [file/folder]')
-
-if __name__ == "__main__":
-    # Load the camera matrix and distortion coefficients obtained from calibration
-    camera_matrix = np.load('camera_matrix.npy')
-    dist_coeffs = np.load('dist_coeffs.npy')
-
-    opt = parse_opt()
-    main(opt)
-  
     
