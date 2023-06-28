@@ -73,5 +73,27 @@ class perception_lane_info:
 
         return lane_coords
     
+    def get_turning_route(self, lane):
+        # obtain from pre-processing
+        next_lane = None
+        # next_lane = lane -> [left_lane, straight_lane, right_lane]
+        return next_lane
+    
+    def stack_lanes(self, prev_lane, next_lane):
+        if len(next_lane) == 0:
+            return prev_lane
+        prev_arr_x, next_arr_x = [], []
+        prev_arr_y, next_arr_y = [], []
+        for x, y in prev_lane:
+            prev_arr_x.append(x)
+            prev_arr_y.append(y)
+        for x, y in next_lane:
+            next_arr_x.append(x)
+            next_arr_y.append(y)
+        lane_x = np.hstack((prev_arr_x, next_arr_x))
+        lane_y = np.hstack((prev_arr_y, next_arr_y))
+        return [lane_x, lane_y]
+
+    
 if __name__ == "__main__":
     perception_lane_info()
