@@ -21,10 +21,10 @@ class YOLOv5:
         sys.path.insert(1, root)
         self.torch = torch
     # try:
-        from perception.code.YOLOv5.models.common import DetectMultiBackend
-        from perception.code.YOLOv5.utils.augmentations import  letterbox
-        from perception.code.YOLOv5.utils.general import check_img_size, non_max_suppression, scale_boxes, check_requirements
-        from perception.code.YOLOv5.utils.torch_utils import select_device
+        from models.common import DetectMultiBackend
+        from utils.augmentations import  letterbox
+        from utils.general import check_img_size, non_max_suppression, scale_boxes, check_requirements
+        from utils.torch_utils import select_device
         self.letterbox = letterbox
         self.check_img_size = check_img_size
         self.non_max_suppression =non_max_suppression

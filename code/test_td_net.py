@@ -6,7 +6,6 @@ import time
 import cv2
 import numpy as np
 from perception.code import TDNet as TN
-# import TDNet as TN
 from tqdm import tqdm
 
 
