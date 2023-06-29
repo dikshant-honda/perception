@@ -2,13 +2,13 @@ import cv2
 import numpy as np
 
 class perception_lane_info:
-    def __init__(self) -> None:
+    def __init__(self, camera_matrix, dist_coeffs) -> None:
         # Load the camera matrix and distortion coefficients obtained from calibration
-        self.camera_matrix = np.load('camera_matrix.npy')
-        self.dist_coeffs = np.load('dist_coeffs.npy')
+        self.camera_matrix = camera_matrix
+        self.dist_coeffs = dist_coeffs
 
         # Load the image
-        self.image = cv2.imread("/home/dikshant/catkin_ws/src/perception/src/perception/code/tests/result.png")
+        self.image = cv2.imread("/home/dikshant/catkin_ws/src/intgeration_module/src/integration/data/Leeds/Background.bmp")
 
     def get_lanes(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
